@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const slugify = require('slugify');
 
 const geocoder = require('../utils/geocoder');
-const { Schema } = mongoose;
+const { Schema, model } = mongoose;
 
 const BootcampSchema = new Schema({
   name: {
@@ -129,4 +129,4 @@ BootcampSchema.pre('save', async function(next) {
   next();
 });
 
-module.exports = mongoose.model('bootcamp', BootcampSchema);
+module.exports = model('Bootcamp', BootcampSchema);

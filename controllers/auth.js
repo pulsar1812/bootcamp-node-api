@@ -16,7 +16,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     name,
     email,
     password,
-    role
+    role,
   });
 
   sendTokenResponse(user, 200, res);
@@ -67,7 +67,7 @@ exports.getCurrentUser = asyncHandler(async (req, res, next) => {
 exports.logout = asyncHandler(async (req, res, next) => {
   res.cookie('token', 'none', {
     expires: new Date(Date.now() + 10 * 1000),
-    httpOnly: true
+    httpOnly: true,
   });
 
   res.status(200).json({ success: true, data: {} });
@@ -79,12 +79,12 @@ exports.logout = asyncHandler(async (req, res, next) => {
 exports.updateDetails = asyncHandler(async (req, res, next) => {
   const fieldsToUpdate = {
     name: req.body.name,
-    email: req.body.email
+    email: req.body.email,
   };
 
   const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
     new: true,
-    runValidators: true
+    runValidators: true,
   });
 
   res.status(200).json({ success: true, data: user });
@@ -134,8 +134,8 @@ you can reset your password using this link: \n\n${resetUrl}`;
   try {
     await sendEmail({
       email: user.email,
-      subect: 'Password Reset Token',
-      message
+      subject: 'Password Reset Token',
+      message,
     });
 
     res.status(200).json({ success: true, data: 'Email sent' });
@@ -164,7 +164,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 
   const user = await User.findOne({
     resetPasswordToken,
-    resetPasswordExpire: { $gt: Date.now() }
+    resetPasswordExpire: { $gt: Date.now() },
   });
 
   if (!user) {
@@ -189,7 +189,7 @@ const sendTokenResponse = (user, statusCode, res) => {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
     ),
-    httpOnly: true
+    httpOnly: true,
   };
 
   if (process.env.NODE_ENV === 'production') {
